@@ -23,19 +23,41 @@ const Article = mongoose.model("Article", articleSchema);
 
 // -------------------Port Section-------------------
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, function(){
+app.listen(PORT, function() {
   console.log("Server connected on " + PORT);
 });
 
-// -------------------Get Section-------------------
-app.get("/articles", (req, res)=>{
-  Article.find((err, foundArticles)=>{
-    if(!err) res.send(foundArticles);
-    else res.send(err);
+// -------------------All articles Section-------------------
+app.route("/articles")
+  .get((req, res) => {
+    Article.find((err, foundArticles) => {
+      if (!err) res.send(foundArticles);
+      else res.send(err);
+    });
+  })
+  .post((req, res) => {
+    const newArticle = new Article({
+      title: req.body.title,
+      content: req.body.content
+    });
+    newArticle.save((err) => {
+      if (!err) res.send("Successfully added new article.");
+      else res.send(err);
+    });
+  })
+  .delete((req, res) => {
+    Article.deleteMany((err) => {
+      if (!err) res.send("Successfully deleted all articles");
+      else res.send(err);
+    });
   });
-});
 
-// -------------------Post Section-------------------
-app.post("/add", (req, res)=>{
+  // -------------------Single article Section-------------------
 
-});
+  app.route("/articles/:articleTitle")
+  .get((req, res)=>{
+    Article.findOne({title: req.params.articleTitle}, (err, foundArticle)=>{
+      if(foundArticle) console.log(res.send(foundArticle));
+      else res.send("No articles matching that title was found");
+    });
+  });
