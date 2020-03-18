@@ -60,4 +60,12 @@ app.route("/articles")
       if(foundArticle) console.log(res.send(foundArticle));
       else res.send("No articles matching that title was found");
     });
+  })
+  .put((req, res)=>{
+    Article.updateOne(
+      {title: req.params.articleTitle},
+      {title: req.body.title, content: req.body.content},
+      (err)=>{
+        if(!err) console.log("Successfully updated article");
+      });
   });
