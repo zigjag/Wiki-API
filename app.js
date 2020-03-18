@@ -59,7 +59,7 @@ app.route("/articles/:articleTitle")
     Article.findOne({
       title: req.params.articleTitle
     }, (err, foundArticle) => {
-      if (foundArticle) console.log(res.send(foundArticle));
+      if (foundArticle) res.send(foundArticle);
       else res.send("No articles matching that title was found");
     });
   })
@@ -71,7 +71,26 @@ app.route("/articles/:articleTitle")
         content: req.body.content
       },
       (err) => {
-        if (!err) console.log("Successfully updated article");
+        if (!err) res.send("Successfully updated article");
+        else res.send(err);
       });
   })
-  .patch();
+  .patch((req, res) => {
+    Article.updateOne({
+        title: req.params.articleTitle
+      }, {
+        $set: req.body
+      },
+      (err) => {
+        if (!err) res.send("Successfully updated article");
+        else res.send(err);
+      });
+  })
+  .delete((req, res) => {
+    Article.deleteOne({
+      title: req.params.articleTitle
+    }, (err)=>{
+      if(!err) res.send('Successfully deleted article');
+      else res.send(err);
+    });
+  });
