@@ -52,20 +52,26 @@ app.route("/articles")
     });
   });
 
-  // -------------------Single article Section-------------------
+// -------------------Single article Section-------------------
 
-  app.route("/articles/:articleTitle")
-  .get((req, res)=>{
-    Article.findOne({title: req.params.articleTitle}, (err, foundArticle)=>{
-      if(foundArticle) console.log(res.send(foundArticle));
+app.route("/articles/:articleTitle")
+  .get((req, res) => {
+    Article.findOne({
+      title: req.params.articleTitle
+    }, (err, foundArticle) => {
+      if (foundArticle) console.log(res.send(foundArticle));
       else res.send("No articles matching that title was found");
     });
   })
-  .put((req, res)=>{
-    Article.updateOne(
-      {title: req.params.articleTitle},
-      {title: req.body.title, content: req.body.content},
-      (err)=>{
-        if(!err) console.log("Successfully updated article");
+  .put((req, res) => {
+    Article.updateOne({
+        title: req.params.articleTitle
+      }, {
+        title: req.body.title,
+        content: req.body.content
+      },
+      (err) => {
+        if (!err) console.log("Successfully updated article");
       });
-  });
+  })
+  .patch();
