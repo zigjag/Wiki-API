@@ -11,7 +11,7 @@ app.use(bodyParser.json());
 app.set("view engine", ejs);
 app.use(express.static("public/"));
 
-mongoose.connect("mongodb://localhost:27017/wikiDB", {
+mongoose.connect("mongodb+srv://jkligel:1618@cluster0-ax2hg.mongodb.net/wikiDB", {
   useNewUrlParser: true,
   useUnifiedTopology: true
 });
